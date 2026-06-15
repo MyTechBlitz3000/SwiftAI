@@ -5,8 +5,8 @@ import PackageDescription
 let package = Package(
   name: "swift-ai",
   platforms: [
-    .macOS(.v14),
     .iOS(.v17),
+    .macOS(.v14),
     .tvOS(.v17),
     .watchOS(.v10),
     .macCatalyst(.v17),
@@ -19,7 +19,6 @@ let package = Package(
     .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "510.0.0"),
     .package(url: "https://github.com/swiftlang/swift-format.git", from: "510.0.0"),
     .package(url: "https://github.com/MacPaw/OpenAI.git", exact: "0.4.7"),
-    .package(url: "https://github.com/pointfreeco/swift-macro-testing.git", from: "0.6.3"),
     .package(url: "https://github.com/ml-explore/mlx-swift-examples.git", from: "2.25.6"),
     .package(url: "https://github.com/apple/swift-collections.git", from: "1.3.0"),
   ],
@@ -27,7 +26,6 @@ let package = Package(
     .target(
       name: "SwiftAI",
       dependencies: [
-        "SwiftAIMacros",
         .product(name: "OpenAI", package: "OpenAI"),
         .product(name: "OrderedCollections", package: "swift-collections"),
       ]
@@ -40,43 +38,13 @@ let package = Package(
         .product(name: "MLXLLM", package: "mlx-swift-examples"),
       ]
     ),
-    .macro(
-      name: "SwiftAIMacros",
-      dependencies: [
-        .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-        .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-        .product(name: "SwiftFormat", package: "swift-format"),
-      ]
-    ),
-    .testTarget(
-      name: "SwiftAILLMTesting",
-      dependencies: [
-        "SwiftAI",
-        "SwiftAIMacros",
-      ]
-    ),
     .testTarget(
       name: "SwiftAITests",
-      dependencies: [
-        "SwiftAI",
-        "SwiftAILLMTesting",
-      ]
+      dependencies: ["SwiftAI"]
     ),
     .testTarget(
       name: "SwiftAIMLXTests",
-      dependencies: [
-        "SwiftAIMLX",
-        "SwiftAILLMTesting",
-        "SwiftAI",
-      ]
-    ),
-    .testTarget(
-      name: "SwiftAIMacrosTests",
-      dependencies: [
-        "SwiftAIMacros",
-        .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
-        .product(name: "MacroTesting", package: "swift-macro-testing"),
-      ]
+      dependencies: ["SwiftAIMLX", "SwiftAI"]
     ),
   ]
 )
