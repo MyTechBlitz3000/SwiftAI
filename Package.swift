@@ -1,6 +1,5 @@
 // swift-tools-version: 5.10
 
-import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
